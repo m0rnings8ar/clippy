@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Clippy — Clipboard & Snippets",
   "version": "1.0.0",
-  "description": "Clipboard history, a snippet library with dynamic variables, text cleanup and site-aware suggestions. Everything stays on your device.",
+  "description": "Clipboard history and a snippet library with dynamic variables, text cleanup and site-aware suggestions. All data stays local.",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",

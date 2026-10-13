@@ -1,0 +1,1 @@
+Clippy stores snippets, clipboard history and settings only in your browser's local storage. No data is collected, transmitted or shared.
