@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clippy</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <span class="logo">Clippy</span>
+      <nav role="tablist">
+        <button role="tab" data-tab="snippets" aria-selected="true">Snippets</button>
+        <button role="tab" data-tab="history" aria-selected="false">History</button>
+        <button role="tab" data-tab="settings" aria-selected="false">Settings</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Snippet library -->
+      <section id="snippets" data-panel>
+        <div class="toolbar">
+          <input id="snippet-search" type="search" placeholder="Search snippets" autocomplete="off" />
+          <button id="new-snippet" class="primary">New</button>
+        </div>
+        <div id="tag-filter" class="tags"></div>
+        <ul id="snippet-list" class="list"></ul>
+      </section>
+
+      <!-- Snippet editor -->
+      <section id="editor" data-panel hidden>
+        <form id="editor-form" autocomplete="off">
+          <label>Name <input name="name" required placeholder="Meeting follow-up" /></label>
+          <div class="row2">
+            <label>Trigger
+              <span class="prefixed"><span id="prefix-hint">;</span><input name="trigger" placeholder="fu" pattern="\S*" /></span>
+            </label>
+            <label>Tags <input name="tags" placeholder="email, work" /></label>
+          </div>
+          <label>Suggest on sites
+            <span class="inline">
+              <input name="sites" placeholder="github.com, *.atlassian.net" />
+              <button type="button" id="add-site" class="ghost" hidden>+ this site</button>
+            </span>
+          </label>
+          <label>Body
+            <textarea name="body" rows="7" spellcheck="false" placeholder="Hi {{input:Name}}, …"></textarea>
+          </label>
+          <div class="inline">
+            <select id="insert-var" aria-label="Insert variable">
+              <option value="">Insert variable…</option>
+            </select>
+            <span id="var-help" class="muted"></span>
+          </div>
+          <div class="preview-wrap">
+            <div class="label">Preview</div>
+            <pre id="editor-preview"></pre>
+          </div>
+          <p id="editor-error" class="error" role="alert"></p>
+          <div class="actions">
+            <button type="button" id="delete-snippet" class="danger ghost">Delete</button>
+            <span class="spacer"></span>
+            <button type="button" id="cancel-edit" class="ghost">Cancel</button>
+            <button type="submit" class="primary">Save</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Clipboard history -->
+      <section id="history" data-panel hidden>
+        <div class="toolbar">
+          <input id="history-search" type="search" placeholder="Search clipboard history" autocomplete="off" />
+          <button id="toggle-recording" class="pill"></button>
+        </div>
+        <ul id="history-list" class="list"></ul>
+        <div class="footer-actions">
+          <span id="history-count" class="muted"></span>
+          <button id="clear-history" class="ghost danger">Clear (keeps pinned)</button>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="settings" data-panel hidden>
+        <form id="settings-form">
+          <fieldset>
+            <legend>Clipboard history</legend>
+            <label class="check"><input type="checkbox" name="recording" /> Record copies made in Chrome</label>
+            <label class="check"><input type="checkbox" name="skipSensitive" /> Skip passwords, API keys, tokens and card numbers</label>
+            <label class="inline-row">Keep the last <input type="number" name="historyLimit" min="10" max="2000" step="10" class="num" /> items (pinned items are always kept)</label>
+            <label>Never record on these sites (one per line)
+              <textarea name="excludedHosts" rows="3" placeholder="bank.example.com&#10;*.internal.corp"></textarea>
+            </label>
+          </fieldset>
+          <fieldset>
+            <legend>Snippets</legend>
+            <label class="check"><input type="checkbox" name="triggerExpansion" /> Expand triggers as you type (trigger + Space or Tab)</label>
+            <label class="inline-row">Trigger prefix <input name="triggerPrefix" maxlength="3" class="num" /></label>
+          </fieldset>
+          <fieldset>
+            <legend>“Paste clean” cleanup chain</legend>
+            <div id="cleanup-options" class="grid"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Shortcuts</legend>
+            <ul id="shortcut-list" class="plain"></ul>
+            <button type="button" id="edit-shortcuts" class="ghost">Change shortcuts…</button>
+          </fieldset>
+          <fieldset>
+            <legend>Backup</legend>
+            <div class="inline">
+              <button type="button" id="export" class="ghost">Export snippets</button>
+              <button type="button" id="import" class="ghost">Import…</button>
+              <input type="file" id="import-file" accept="application/json,.json" hidden />
+            </div>
+            <p id="backup-status" class="muted"></p>
+          </fieldset>
+          <p class="muted small">Everything is stored locally in this browser profile. Nothing is synced or sent anywhere.</p>
+        </form>
+      </section>
+    </main>
+
+    <script src="../lib/search.js"></script>
+    <script src="../lib/templates.js"></script>
+    <script src="../lib/cleanup.js"></script>
+    <script src="../lib/sensitive.js"></script>
+    <script src="../lib/defaults.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
